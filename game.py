@@ -1,4 +1,5 @@
 import pygame, sys
+from random import randint
 
 def display_score():
     current_time = int((pygame.time.get_ticks() - start_time)/1000)
@@ -7,6 +8,27 @@ def display_score():
     screen.blit(score_surf, score_rect)
     return current_time
 
+def obstacle_movement(obstacle_list):
+    if obstacle_list:
+        for obstacle_rect in obstacle_list:
+            obstacle_rect.x -= 5
+            
+            if obstacle_rect.bottom == 300:
+                screen.blit(snail_surf, obstacle_rect)
+            else: 
+                screen.blit(fly_surf, obstacle_rect)
+        
+        obstacle_list = [obstacle for obstacle in obstacle_list if obstacle.x > -100]
+        
+        return obstacle_list
+    else: 
+        return []
+
+def collisions(player, obstacles):
+    if obstacles:
+        for obstacle_rect in obstacles:
+            if player.colliderect(obstacle_rect): return False
+    return True
 
 pygame.init() #Inicia o pygame
 
@@ -23,8 +45,13 @@ game_over = False
 sky_surface = pygame.image.load("./images/Sky.png").convert()
 ground_surface = pygame.image.load("./images/ground.png").convert()
 
+# OBSTACLES
 snail_surf = pygame.image.load("images/snail/snail1.png").convert_alpha()
-snail_rect = snail_surf.get_rect(bottomright = (600, 300))
+fly_surf = pygame.image.load("images/fly/Fly1.png").convert_alpha()
+
+obstacle_rect_list = []
+
+
 
 player_surf = pygame.image.load("images/player/player_walk_1.png").convert_alpha()
 player_rect = player_surf.get_rect(midbottom = (80, 300))
@@ -44,8 +71,13 @@ instruct_rect = instruct_surf.get_rect(center = (400, 340))
 score_message = test_font.render(f"Your score: {score}", False, '#7cccb4')
 score_message_rect = score_message.get_rect(center = (400, 340))
 
+# TIMER
+obstacle_timer = pygame.USEREVENT + 1
+pygame.time.set_timer(obstacle_timer, 900)
+
 # GAME LOOP
 while True:
+    # EVENTS
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit() # Fecha a janela do pygame (o programa continua rodando)
@@ -62,20 +94,21 @@ while True:
         else:
             if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                 game_active = True
-                snail_rect.left = 800
                 start_time = pygame.time.get_ticks()
-            
+        
+        if event.type == obstacle_timer and game_active:
+            if randint(0, 2):
+                obstacle_rect_list.append(snail_surf.get_rect(bottomright = (randint(900, 1100), 300)))
+            else:
+                obstacle_rect_list.append(fly_surf.get_rect(bottomright = (randint(900, 1100), 210)))
+                
+    # STATES
     if game_active:
         screen.blit(sky_surface,(0,0)) # Desenha a superfície na tela
         screen.blit(ground_surface,(0,300))
-        # pygame.draw.rect(screen, '#c0e8ec', score_rect) # Desenha a forma na tela
-        # pygame.draw.rect(screen, '#c0e8ec', score_rect, 10)
-        # screen.blit(score_surf, score_rect)
         score = display_score()
         
-        snail_rect.x -= 5
-        if snail_rect.right <= 0: snail_rect.left = 800 # Reseta a posição do caracol quando ele sai da tela
-        screen.blit(snail_surf, snail_rect)
+
         
         # PLAYER
         player_gravity += 1
@@ -83,13 +116,18 @@ while True:
         if player_rect.bottom >= 300: player_rect.bottom = 300 # "Colisão" com o chão
         screen.blit(player_surf, player_rect)
 
+        # OBSTACLE MOVEMENT
+        obstacle_rect_list = obstacle_movement(obstacle_rect_list)
+
         # COLLISION
-        if snail_rect.colliderect(player_rect):
-            game_active = False
-            game_over = True
+        game_active = collisions(player_rect, obstacle_rect_list)
+        
     else:
         screen.fill((94, 129, 162))
         screen.blit(player_stand, player_stand_rect)
+        obstacle_rect_list.clear()
+        player_rect.midbottom = (80, 300)
+        player_gravity = 0
         
         score_message = test_font.render(f"Your score: {score}", False, '#7cccb4')
         score_message_rect = score_message.get_rect(center = (400, 340))
