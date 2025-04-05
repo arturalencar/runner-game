@@ -22,7 +22,6 @@ class Player(pygame.sprite.Sprite):
         if (keys[pygame.K_SPACE] or keys[pygame.MOUSEBUTTONDOWN]) and self.rect.bottom >= 300:
             self.gravity = -20
             self.jump_sound.play()
-        
             
     def apply_gravity(self):
         self.gravity += 1

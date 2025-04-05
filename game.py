@@ -62,10 +62,8 @@ class Game:
             return False
         return True
 
-    def run(self):
-        while True:
-            # EVENTS
-            for event in pygame.event.get():
+    def run_events(self, events):
+        for event in events:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
@@ -77,45 +75,43 @@ class Game:
                             self.obstacle_group.add(Fly())
                         else:
                             self.obstacle_group.add(Snail())
-                        # self.obstacle_group.add(Obstacle(choice(['fly', 'snail', 'snail', 'snail'])))
                 else:
                     if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                         self.game_active = True
                         self.start_time = pygame.time.get_ticks()
 
-            # STATES
-            if self.game_active:
-                self.screen.blit(self.sky_surface, (0, 0))
-                self.screen.blit(self.ground_surface, (0, 300))
-                self.score = self.display_score()
+    def update(self):
+        if self.game_active:
+            self.player.update()
+            self.obstacle_group.update()
+            self.game_active = self.collision_sprite()
+    
+    def draw(self):
+        # STATES
+        if self.game_active:
+            self.screen.blit(self.sky_surface, (0, 0))
+            self.screen.blit(self.ground_surface, (0, 300))
+            self.score = self.display_score()
 
-                self.player.draw(self.screen)
-                self.player.update()
+            self.player.draw(self.screen)
+            self.player.update()
 
-                self.obstacle_group.draw(self.screen)
-                self.obstacle_group.update()
+            self.obstacle_group.draw(self.screen)
+            self.obstacle_group.update()
 
-                # COLLISION
-                self.game_active = self.collision_sprite()
+            # COLLISION
+            self.game_active = self.collision_sprite()
 
+        else:
+            self.screen.fill((94, 129, 162))
+            self.screen.blit(self.player_stand, self.player_stand_rect)
+
+            self.score_message = self.test_font.render(f"Your score: {self.score}", False, '#7cccb4')
+            self.score_message_rect = self.score_message.get_rect(center=(400, 340))
+            self.screen.blit(self.game_title, self.game_title_rect)
+
+            if self.game_over:
+                self.screen.blit(self.score_message, self.score_message_rect)
+                
             else:
-                self.screen.fill((94, 129, 162))
-                self.screen.blit(self.player_stand, self.player_stand_rect)
-
-                self.score_message = self.test_font.render(f"Your score: {self.score}", False, '#7cccb4')
-                self.score_message_rect = self.score_message.get_rect(center=(400, 340))
-                self.screen.blit(self.game_title, self.game_title_rect)
-
-                if self.game_over:
-                    self.screen.blit(self.score_message, self.score_message_rect)
-                    
-                else:
-                    self.screen.blit(self.instruct_surf, self.instruct_rect)
-
-            pygame.display.update()
-            self.clock.tick(60)
-
-# Inicializa o jogo
-if __name__ == "__main__":
-    game = Game()
-    game.run()
+                self.screen.blit(self.instruct_surf, self.instruct_rect)

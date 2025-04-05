@@ -27,7 +27,7 @@ Runner Game é um jogo simples desenvolvido em Python usando a biblioteca Pygame
 1. Execute o jogo:
 
     ```bash
-    python game.py
+    python main.py
     ```
 
 2. Use a barra de espaço para iniciar o jogo e pular os obstáculos.
