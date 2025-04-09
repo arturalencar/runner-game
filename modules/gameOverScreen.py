@@ -3,6 +3,9 @@ import pygame
 
 class GameOverScreen(Screen):
     def __init__(self, screen, score):
+        """
+        Inicializa a tela de fim de jogo com título, pontuação e botões.
+        """
         super().__init__(screen)
         self.font = pygame.font.Font("font/Pixeltype.ttf", 50)
         self.title = self.font.render("Game Over", True, "#e63946")
@@ -22,6 +25,9 @@ class GameOverScreen(Screen):
         self.hand_cursor = False
 
     def handle_events(self, events):
+        """
+        Gerencia eventos de mouse para interação com os botões.
+        """
         for event in events:
             if event.type == pygame.MOUSEMOTION:
                 if self.retry_button_rect.collidepoint(event.pos) or self.back_button_rect.collidepoint(event.pos):
@@ -40,6 +46,9 @@ class GameOverScreen(Screen):
                     return "menu"
 
     def draw(self):
+        """
+        Renderiza os elementos visuais da tela.
+        """
         self.screen.fill((94, 129, 162))
         self.screen.blit(self.title, self.title_rect)
         self.screen.blit(self.score_text, self.score_text_rect)

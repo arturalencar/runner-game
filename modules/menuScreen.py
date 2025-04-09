@@ -2,7 +2,13 @@ from modules.screen import Screen
 import pygame, sys
 
 class MenuScreen(Screen):
+    """
+    Classe que representa a tela de menu do jogo.            
+    """
     def __init__(self, screen):
+        """
+        Inicializa a tela de menu, configurando fontes, textos, botões e imagens.
+        """
         super().__init__(screen)
         self.font = pygame.font.Font("font/Pixeltype.ttf", 50)
         self.title = self.font.render("Pixel Runner", True, "#7cccb4")
@@ -23,6 +29,9 @@ class MenuScreen(Screen):
         self.player_stand_rect = self.player_stand.get_rect(center=(400, 180))
         
     def handle_events(self, events):
+        """
+        Lida com os eventos do mouse, alterando o cursor e navegando para outras telas ou encerrando o jogo.
+        """
         for event in events:
             if event.type == pygame.MOUSEMOTION:
                 if self.play_button_rect.collidepoint(event.pos) or self.quit_button_rect.collidepoint(event.pos):
@@ -43,6 +52,9 @@ class MenuScreen(Screen):
                     sys.exit()
                     
     def draw(self):
+        """
+        Desenha os elementos da tela de menu, incluindo o título, botões e imagem do jogador.
+        """
         self.screen.fill((94, 129, 162))
         self.screen.blit(self.title, self.title_rect)
         pygame.draw.rect(self.screen, "#caf0f8", self.play_button_rect)

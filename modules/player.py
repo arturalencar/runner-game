@@ -1,6 +1,22 @@
 import pygame
 
 class Player(pygame.sprite.Sprite):
+    """
+    Classe Player representa o jogador no jogo.
+
+    Métodos:
+        __init__():
+            Inicializa os atributos do jogador, incluindo imagens, posição, gravidade e som de pulo.
+        player_input():
+            Verifica a entrada do jogador (tecla espaço ou clique do mouse) para realizar o pulo.
+        apply_gravity():
+            Aplica a gravidade ao jogador, ajustando sua posição vertical.
+        animation_state():
+            Atualiza a imagem do jogador com base no estado (caminhando ou pulando).
+        update():
+            Atualiza o estado do jogador chamando os métodos de entrada, gravidade e animação.
+    """
+            
     def __init__(self):
         super().__init__()
         

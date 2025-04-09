@@ -3,6 +3,14 @@ import pygame
 from random import randint
 
 class Snail(Obstacle):
+    """
+    Representa um obstáculo do tipo caracol no jogo.
+
+    Métodos:
+        __init__:
+            Inicializa o objeto Snail, carregando as imagens de animação,
+            configurando os quadros e definindo a posição inicial do caracol.
+    """
     def __init__(self):
         super().__init__()
         snail_1 = pygame.image.load("images/snail/snail1.png").convert_alpha()

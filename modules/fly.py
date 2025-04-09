@@ -3,6 +3,13 @@ import pygame
 from random import randint
 
 class Fly(Obstacle):
+    """
+    Representa um obstáculo do tipo 'Fly' no jogo.
+
+    Métodos:
+        __init__:
+            Inicializa a classe Fly, carregando as imagens de animação e definindo a posição inicial do obstáculo.
+    """
     def __init__(self):
         super().__init__()
         fly_1 = pygame.image.load("images/fly/Fly1.png").convert_alpha()

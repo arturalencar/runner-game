@@ -2,23 +2,28 @@ from modules.menuScreen import MenuScreen
 from modules.gameScreen import GameScreen
 from modules.gameOverScreen import GameOverScreen
 
-"""
-    Gerencia múltiplas telas em um jogo ou aplicação, permitindo alternar
-    entre diferentes telas (ex.: menu, jogo) e delegando o tratamento de eventos,
-    atualizações e desenhos para a tela ativa.
+class ScreenManager: 
+    """
+    Gerencia as diferentes telas do jogo, incluindo transições entre elas, atualização de lógica e renderização.
     
     Atributos:
-        screen: A superfície principal de exibição onde todas as telas serão renderizadas.
-        screens: Um dicionário que mapeia os nomes das telas para seus respectivos objetos.
-        current_screen: O nome da tela atualmente ativa.
-"""
-
-class ScreenManager:
-    def __init__(self, screen):
-        """
-        Inicializa o ScreenManager com uma superfície de exibição e configura as telas
-        """
-        
+        screen (pygame.Surface): Superfície de exibição onde as telas serão desenhadas.
+        screens (dict): Dicionário contendo as instâncias das telas do jogo.
+        current_screen (str): Nome da tela atualmente ativa.
+    
+    Métodos:
+        __init__(screen):
+            Inicializa o ScreenManager com a superfície de exibição e configura as telas disponíveis.
+        handle_events(events):
+            Trata os eventos de entrada delegando-os para a tela atual. 
+            Alterna para uma nova tela caso a tela atual retorne o nome de outra tela.
+        update():
+            Atualiza a lógica da tela atualmente ativa.
+        draw():
+            Renderiza a tela atualmente ativa na superfície de exibição.
+    """
+    
+    def __init__(self, screen):        
         self.screen = screen
         self.screens = {
             "menu": MenuScreen(screen),
@@ -28,10 +33,6 @@ class ScreenManager:
         self.current_screen = "menu"
         
     def handle_events(self, events):
-        """
-        Trata os eventos de entrada delegando-os para a tela atual. Se a tela atual retornar o nome de uma nova tela, alterna para essa tela.
-        """
-        
         next_screen = self.screens[self.current_screen].handle_events(events)
         
         if next_screen in self.screens:
@@ -45,14 +46,8 @@ class ScreenManager:
             self.current_screen = next_screen
             
     def update(self):
-        """
-        Atualiza a lógica da tela atual.
-        """
         self.screens[self.current_screen].update()
         
     def draw(self):
-        """
-        Desenha a tela atual na superfície de exibição.
-        """
         self.screens[self.current_screen].draw()
         

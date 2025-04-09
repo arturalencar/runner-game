@@ -6,12 +6,14 @@ from modules.snail import Snail
 
 class Game:
     def __init__(self):
+        """
+        Inicializa o jogo, configurando a tela, fontes, música de fundo, grupos de sprites, superfícies de fundo e o temporizador para gerar obstáculos.
+        """
         pygame.init()
         self.screen = pygame.display.set_mode(size=(800, 400))
         pygame.display.set_caption("Runner")
         self.clock = pygame.time.Clock()
         self.font = pygame.font.Font("font/Pixeltype.ttf", 50)
-        #self.game_active = False
         self.start_time = 0
         self.score = 0
         self.game_over = False
@@ -35,6 +37,9 @@ class Game:
         pygame.time.set_timer(self.obstacle_timer, 1500)
 
     def display_score(self):
+        """
+        Exibe a pontuação atual na tela.
+        """
         current_time = int((pygame.time.get_ticks() - self.start_time) / 1000)
         score_surf = self.font.render(f'Score:  {current_time}', False, (64, 64, 64))
         score_rect = score_surf.get_rect(center=(400, 50))
@@ -42,13 +47,18 @@ class Game:
         return current_time
 
     def collision_sprite(self):
+        """
+        Verifica se há colisão entre o jogador e os obstáculos.
+        """
         if pygame.sprite.spritecollide(self.player.sprite, self.obstacle_group, False):
             self.obstacle_group.empty()
             return True
         return False
 
     def reset_game(self):
-        """ Reinicia o estado do jogo """
+        """ 
+        Reinicia o estado do jogo 
+        """
         
         self.start_time = pygame.time.get_ticks()
         self.score = 0
@@ -59,6 +69,9 @@ class Game:
         
 
     def run_events(self, events):
+        """
+        Processa os eventos do jogo
+        """
         for event in events:
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -73,11 +86,19 @@ class Game:
                             self.obstacle_group.add(Snail())
 
     def update(self):
+        """
+        Atualiza o estado dos elementos do jogo:
+        """
+        
         self.player.update()
         self.obstacle_group.update()
         self.game_over = self.collision_sprite()
     
     def draw(self):
+        """
+        Desenha os elementos do jogo na tela:
+        """
+        
         if not self.game_over:
             self.screen.blit(self.sky_surface, (0, 0))
             self.screen.blit(self.ground_surface, (0, 300))

@@ -1,6 +1,18 @@
 import pygame
 
 class Obstacle(pygame.sprite.Sprite):
+    """
+    Representa um obstáculo no jogo.
+    Métodos:
+        __init__():
+            Inicializa o obstáculo com atributos para animação e posição.
+        animation_state():
+            Atualiza o estado da animação, alternando entre os frames disponíveis.
+        destroy():
+            Remove o obstáculo do grupo de sprites se ele sair da tela (posição x <= -100).
+        update():
+            Atualiza o estado do obstáculo, incluindo animação, movimento e verificação de destruição.
+    """
     def __init__(self):
         super().__init__()
         self.frames = []
