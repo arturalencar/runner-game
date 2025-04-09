@@ -1,4 +1,4 @@
-from obstacle import Obstacle
+from modules.obstacle import Obstacle
 import pygame
 from random import randint
 

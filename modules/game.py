@@ -1,8 +1,8 @@
 import pygame, sys
 from random import choice
-from player import Player
-from fly import Fly
-from snail import Snail
+from modules.player import Player
+from modules.fly import Fly
+from modules.snail import Snail
 
 class Game:
     def __init__(self):

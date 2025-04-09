@@ -1,6 +1,6 @@
-from menuScreen import MenuScreen
-from gameScreen import GameScreen
-from gameOverScreen import GameOverScreen
+from modules.menuScreen import MenuScreen
+from modules.gameScreen import GameScreen
+from modules.gameOverScreen import GameOverScreen
 
 """
     Gerencia múltiplas telas em um jogo ou aplicação, permitindo alternar

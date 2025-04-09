@@ -1,5 +1,5 @@
-from screen import Screen
-from game import Game
+from modules.screen import Screen
+from modules.game import Game
 
 class GameScreen(Screen):
     def __init__(self, screen):

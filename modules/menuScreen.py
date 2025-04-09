@@ -1,4 +1,4 @@
-from screen import Screen
+from modules.screen import Screen
 import pygame, sys
 
 class MenuScreen(Screen):
