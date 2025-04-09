@@ -14,12 +14,10 @@ class Game:
         self.game_active = False
         self.start_time = 0
         self.score = 0
-        self.game_over = False
-
         # Background music
         self.bg_music = pygame.mixer.Sound('audio/music.wav')
         self.bg_music.play(loops=-1)
-        self.bg_music.set_volume(0.4)
+        self.bg_music.set_volume(0.3)
 
         # Groups
         self.player = pygame.sprite.GroupSingle()
@@ -31,14 +29,10 @@ class Game:
         self.ground_surface = pygame.image.load("./images/ground.png").convert()
 
         # Intro screen
-        self.player_stand = pygame.image.load("images/player/player_stand.png").convert_alpha()
-        self.player_stand = pygame.transform.rotozoom(self.player_stand, 0, 2)
-        self.player_stand_rect = self.player_stand.get_rect(center=(400, 200))
-
-        self.game_title = self.test_font.render("Pixel Runner", False, '#7cccb4')
+        self.game_title = self.test_font.render("Are you ready?", False, '#7cccb4')
         self.game_title_rect = self.game_title.get_rect(center=(400, 70))
 
-        self.instruct_surf = self.test_font.render("Press SPACE to run", False, '#7cccb4')
+        self.instruct_surf = self.test_font.render("Press SPACE to jump", False, '#7cccb4')
         self.instruct_rect = self.instruct_surf.get_rect(center=(400, 340))
 
         self.score_message = self.test_font.render(f"Your score: {self.score}", False, '#7cccb4')
@@ -70,7 +64,7 @@ class Game:
 
                 if self.game_active:
                     if event.type == self.obstacle_timer:
-                        obstacle_type = choice(['fly', 'snail', 'snail', 'snail'])
+                        obstacle_type = choice(['fly', 'snail', 'snail', 'snail', 'fly'])
                         if obstacle_type == 'fly':
                             self.obstacle_group.add(Fly())
                         else:
@@ -104,7 +98,6 @@ class Game:
 
         else:
             self.screen.fill((94, 129, 162))
-            self.screen.blit(self.player_stand, self.player_stand_rect)
 
             self.score_message = self.test_font.render(f"Your score: {self.score}", False, '#7cccb4')
             self.score_message_rect = self.score_message.get_rect(center=(400, 340))
