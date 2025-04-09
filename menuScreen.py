@@ -1,6 +1,5 @@
 from screen import Screen
-import pygame
-import sys
+import pygame, sys
 
 class MenuScreen(Screen):
     def __init__(self, screen):
@@ -37,6 +36,7 @@ class MenuScreen(Screen):
                     
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if self.play_button_rect.collidepoint(event.pos):
+                    pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)  
                     return "game"
                 elif self.quit_button_rect.collidepoint(event.pos):
                     pygame.quit()

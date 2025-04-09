@@ -1,5 +1,6 @@
 from menuScreen import MenuScreen
 from gameScreen import GameScreen
+from gameOverScreen import GameOverScreen
 
 """
     Gerencia múltiplas telas em um jogo ou aplicação, permitindo alternar
@@ -21,7 +22,8 @@ class ScreenManager:
         self.screen = screen
         self.screens = {
             "menu": MenuScreen(screen),
-            "game": GameScreen(screen)
+            "game": GameScreen(screen),
+            "game_over": None
         }
         self.current_screen = "menu"
         
@@ -32,7 +34,14 @@ class ScreenManager:
         
         next_screen = self.screens[self.current_screen].handle_events(events)
         
-        if next_screen:
+        if next_screen in self.screens:
+            if next_screen == "game_over":
+                game_screen = self.screens["game"]
+                self.screens["game_over"] = GameOverScreen(self.screen, game_screen.game.score)
+                
+            if next_screen == "game" :
+                self.screens["game"].game.reset_game()
+                
             self.current_screen = next_screen
             
     def update(self):
